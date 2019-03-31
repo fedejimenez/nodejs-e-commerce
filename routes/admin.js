@@ -1,10 +1,15 @@
+const path = require('path');
+
 const express = require('express');
+
+// get root directory
+const rootDir = require('../helpers/path');
 
 const router = express.Router();
 
-// GET products -- /admin/products
-router.get('/products', (req, res, next) => {
-    res.send('List Products!');
+// GET -- /admin/add-product
+router.get('/add-product', (req, res, next) => {
+    res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 });
 
 // POST add products -- /admin/add-products
