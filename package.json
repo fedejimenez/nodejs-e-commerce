@@ -1,0 +1,19 @@
+{
+    "name": "nodejs-e-commerce",
+    "version": "1.0.0",
+    "description": "boilerplate",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
+    },
+    "author": "fedejimenez",
+    "license": "MIT",
+    "devDependencies": {
+        "nodemon": "^1.18.10"
+    },
+    "dependencies": {
+        "eslint": "^5.16.0",
+        "express": "^4.16.4"
+    }
+}
