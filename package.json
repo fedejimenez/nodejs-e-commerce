@@ -10,6 +10,7 @@
     "author": "fedejimenez",
     "license": "MIT",
     "devDependencies": {
+        "body-parser": "^1.18.3",
         "nodemon": "^1.18.10"
     },
     "dependencies": {

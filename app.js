@@ -1,9 +1,16 @@
-const http = require('http');
-
 const express = require('express');
 
 const app = express();
 
-const server = http.createServer(app);
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-server.listen(3000);
+app.use('/admin', adminRoutes);
+app.use('/shop', shopRoutes);
+
+// Error 404
+app.use('/', (req, res) => {
+    res.status(404).send('Page not found')
+})
+
+app.listen(3000);
