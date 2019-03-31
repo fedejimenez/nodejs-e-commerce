@@ -15,7 +15,8 @@ router.get('/add-product', (req, res, next) => {
 // POST add products -- /admin/add-products
 router.post('/add-product', (req, res, next) => {
     console.log(req.body);
-    res.send('Add Product!');
+    // res.send('Add Product!');
+    res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 });
 
 module.exports = router;
