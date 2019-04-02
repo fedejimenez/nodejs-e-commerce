@@ -1,1 +1,1 @@
-[{ "title": "Test", "imageUrl": "https://picsum.photos/200/300/?random", "description": "something...", "price": "20" }, { "title": "Book", "imageUrl": "https://picsum.photos/200/300/?random", "description": "some random item...", "price": "20.5" }]
+[{ "id": "1234", "title": "Test", "imageUrl": "https://picsum.photos/200/300/?random", "description": "something...", "price": "20" }]
