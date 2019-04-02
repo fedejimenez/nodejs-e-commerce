@@ -7,16 +7,24 @@ const rootDir = require('../helpers/path');
 
 const router = express.Router();
 
+const products = [];
+
 // GET -- /admin/add-product
 router.get('/add-product', (req, res, next) => {
-    res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+    res.render('add-product', {
+        pageTitle: 'Add Product',
+        path: '/admin/add-product',
+        formsCSS: true,
+        productCSS: true,
+        activeAddProduct: true
+    });
 });
 
 // POST add products -- /admin/add-products
 router.post('/add-product', (req, res, next) => {
-    console.log(req.body);
-    // res.send('Add Product!');
-    res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+    products.push({ title: req.body.title });
+    res.redirect('/');
 });
 
-module.exports = router;
+exports.routes = router;
+exports.products = products;
