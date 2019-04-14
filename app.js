@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -17,8 +18,18 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
+// Midlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'my secret',
+    resave: 'false', // save only if changes
+    saveUninitialized: false
+        // cookie: {
+        // expires: ,
+        // maxAge:
+        // }
+}));
 
 app.use((req, res, next) => {
     User.findById('5cb28cab5372bd0a8839cf17')
