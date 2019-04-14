@@ -1,10 +1,11 @@
+require('dotenv').config();
 const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
 const app = express();
@@ -32,6 +33,11 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-    app.listen(3000);
-});
+mongoose
+    .connect(process.env.PROD_MONGODB_URI)
+    // .connect('mongodb+srv://fedej:J7LqOT1tAwzpMPnh@clustertest-j7mx2.mongodb.net/shop?retryWrites=true')
+    .then(result => {
+        app.listen(3000);
+    }).catch(err => {
+        console.log(err);;
+    })
