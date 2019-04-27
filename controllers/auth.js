@@ -68,6 +68,7 @@ exports.postSignup = (req, res, next) => {
         .then(userDoc => {
             // check if email already exists
             if (userDoc) {
+                req.flash('error', 'Email exists already, please choose a different one.');
                 return res.redirect('signup');
             }
             // encrypt pass
