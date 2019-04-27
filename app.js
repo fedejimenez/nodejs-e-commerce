@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'my secret',
-    resave: 'false', // save only if changes
+    resave: false, // save only if changes
     saveUninitialized: false,
     store: store
         // cookie: {
@@ -39,7 +39,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     if (!req.session.user) {
-        next();
+        return next();
     }
     User.findById(req.session.user._id)
         .then(user => {
@@ -58,18 +58,6 @@ app.use(errorController.get404);
 mongoose
     .connect(process.env.PROD_MONGODB_URI)
     .then(result => {
-        User.findOne().then(user => {
-            if (!user) {
-                const user = new User({
-                    name: 'Test',
-                    email: 'test@test.com',
-                    cart: {
-                        items: []
-                    }
-                });
-                user.save();
-            }
-        });
         app.listen(3000);
     }).catch(err => {
         console.log(err);;
