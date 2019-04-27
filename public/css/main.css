@@ -224,11 +224,31 @@ form {
     color: white;
 }
 
+.user-message {
+    margin: auto;
+    width: 90%;
+    border: 1px solid rgb(49, 49, 168);
+    padding: 1rem;
+    border-radius: 3px;
+    background: rgb(178, 178, 239);
+    text-align: center;
+    color: rgb(49, 49, 168);
+}
+
+.user-message--error {
+    border-color: red;
+    background: rgb(238, 129, 129);
+    color: rgb(142, 48, 48);
+}
+
 @media (min-width: 768px) {
     .main-header__nav {
         display: flex;
     }
     #side-menu-toggle {
         display: none;
+    }
+    .user-message {
+        width: 30rem;
     }
 }

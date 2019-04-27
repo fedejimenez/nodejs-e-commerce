@@ -2,30 +2,60 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+        message = message[0];
+    } else {
+        message = null;
+    }
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login',
-        isAuthenticated: false
+        errorMessage: message
     });
 };
 
 exports.getSignup = (req, res, next) => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+        message = message[0];
+    } else {
+        message = null;
+    }
     res.render('auth/signup', {
         path: '/signup',
         pageTitle: 'Signup',
-        isAuthenticated: false
+        errorMessage: message
     });
 };
 
 exports.postLogin = (req, res, next) => {
-    User.findById('5bab316ce0a7c75f783cb8a8')
+    const email = req.body.email;
+    const password = req.body.password;
+    User.findOne({ email: email })
         .then(user => {
-            req.session.isLoggedIn = true;
-            req.session.user = user;
-            req.session.save(err => {
-                console.log(err);
-                res.redirect('/');
-            });
+            if (!user) {
+                req.flash('error', 'Invalid Email or Password');
+                return res.redirect('/login');
+            }
+            // validate pass
+            bcrypt.compare(password, user.password)
+                .then(doMatch => {
+                    if (doMatch) {
+                        req.session.isLoggedIn = true;
+                        req.session.user = user;
+                        return req.session.save(err => {
+                            console.log(err);
+                            res.redirect('/');
+                        });
+                    }
+                    req.flash('error', 'Invalid Email or Password');
+                    res.redirect('/login');
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.redirect('/login');
+                })
         })
         .catch(err => console.log(err));
 };
@@ -38,6 +68,7 @@ exports.postSignup = (req, res, next) => {
         .then(userDoc => {
             // check if email already exists
             if (userDoc) {
+                req.flash('error', 'Email exists already, please choose a different one.');
                 return res.redirect('signup');
             }
             // encrypt pass
