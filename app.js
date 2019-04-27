@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf'); // csrf protection
-const flash = require('connect-flash'); // 
+const flash = require('connect-flash'); // flash messages
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -43,7 +43,7 @@ app.use(session({
 
 // check for csrf token in any post request 
 app.use(csrfProtection);
-// flash midleware for messages
+// midleware for flash messages
 app.use(flash());
 
 app.use((req, res, next) => {
