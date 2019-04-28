@@ -1,4 +1,11 @@
-const bcrypt = require('bcryptjs')
+require('dotenv').config(); // use env variables
+const bcrypt = require('bcryptjs');
+
+// using SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -84,7 +91,17 @@ exports.postSignup = (req, res, next) => {
                     return user.save();
                 })
                 .then(result => {
-                    res.redirect('/');
+                    res.redirect('/login');
+                    const msg = {
+                        to: email,
+                        from: 'node@e-commerce.com',
+                        subject: 'Signup succeeded!',
+                        html: '<h1>You successfully signed up!</h1>'
+                    };
+                    sgMail.send(msg);
+                })
+                .catch(err => {
+                    console.log(err);
                 });
         })
         .catch(err => {
