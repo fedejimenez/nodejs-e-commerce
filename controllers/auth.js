@@ -1,4 +1,8 @@
-require('dotenv').config(); // use env variables
+// use env variables
+require('dotenv').config();
+// create secure random values
+const crypto = require('crypto');
+// hassed password
 const bcrypt = require('bcryptjs');
 
 // using SendGrid's v3 Node.js Library
@@ -127,5 +131,42 @@ exports.getReset = (req, res, next) => {
         path: '/reset',
         pageTitle: 'Reset Password',
         errorMessage: message
+    });
+};
+
+exports.postReset = (req, res, next) => {
+    crypto.randomBytes(32, (err, buffer) => {
+        if (err) {
+            console.log(err);
+            return res.redirect('/reset');
+        }
+        const token = buffer.toString('hex');
+        User
+            .findOne({ email: req.body.email })
+            .then(user => {
+                if (!user) {
+                    req.flash('error', 'No account found with that email.');
+                    return res.redirect('/reset');
+                }
+                user.resetToken = token;
+                user.resetTokenExpiration = Date.now() + 3600000;
+                return user.save();
+            })
+            .then(result => {
+                res.redirect('/');
+                const msg = {
+                    to: req.body.email,
+                    from: 'node@e-commerce.com',
+                    subject: 'Password Reset',
+                    html: `
+                        <p> You requested a password reset.</p>
+                        <p> Click this <a href="http://localhost:3000/reset/${token}">link</a> to get a new password.</p>
+                    `
+                };
+                sgMail.send(msg);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     });
 };

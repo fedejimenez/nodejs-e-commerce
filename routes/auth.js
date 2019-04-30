@@ -4,7 +4,7 @@ const authController = require('../controllers/auth');
 
 const router = express.Router();
 
-const listEndpoints = require('express-list-endpoints')
+const listEndpoints = require('express-list-endpoints');
 
 router.get('/login', authController.getLogin);
 
@@ -17,6 +17,8 @@ router.post('/signup', authController.postSignup);
 router.post('/logout', authController.postLogout);
 
 router.get('/reset', authController.getReset);
+
+router.post('/reset', authController.postReset);
 
 // console.log(listEndpoints(router));
 
