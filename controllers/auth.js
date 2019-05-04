@@ -77,7 +77,6 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).render('auth/signup', {
@@ -86,38 +85,28 @@ exports.postSignup = (req, res, next) => {
             errorMessage: errors.array()[0].msg
         });
     }
-    User.findOne({ email: email })
-        .then(userDoc => {
-            // check if email already exists
-            if (userDoc) {
-                req.flash('error', 'Email exists already, please choose a different one.');
-                return res.redirect('signup');
-            }
-            // encrypt pass
-            return bcrypt
-                .hash(password, 12)
-                .then(hashedPassword => {
-                    // create new one
-                    const user = new User({
-                        email: email,
-                        password: hashedPassword,
-                        cart: { items: [] }
-                    });
-                    return user.save();
-                })
-                .then(result => {
-                    res.redirect('/login');
-                    const msg = {
-                        to: email,
-                        from: 'node@e-commerce.com',
-                        subject: 'Signup succeeded!',
-                        html: '<h1>You successfully signed up!</h1>'
-                    };
-                    sgMail.send(msg);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+
+    // encrypt pass
+    bcrypt
+        .hash(password, 12)
+        .then(hashedPassword => {
+            // create new one
+            const user = new User({
+                email: email,
+                password: hashedPassword,
+                cart: { items: [] }
+            });
+            return user.save();
+        })
+        .then(result => {
+            res.redirect('/login');
+            const msg = {
+                to: email,
+                from: 'node@e-commerce.com',
+                subject: 'Signup succeeded!',
+                html: '<h1>You successfully signed up!</h1>'
+            };
+            sgMail.send(msg);
         })
         .catch(err => {
             console.log(err);
