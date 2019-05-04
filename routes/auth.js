@@ -1,5 +1,8 @@
 const express = require('express');
 
+// import functions --> deconstruction
+const { check, validationResult } = require('express-validator/check')
+
 const authController = require('../controllers/auth');
 
 const router = express.Router();
