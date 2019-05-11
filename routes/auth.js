@@ -26,7 +26,7 @@ router.post('/signup', [
             //         throw new Error('This email address is forbidden');
             //     }
             //     return true;
-            return User.findOne({ email: email })
+            return User.findOne({ email: value })
                 .then(userDoc => {
                     // check if email already exists (Async validation)
                     if (userDoc) {
