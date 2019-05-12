@@ -69,7 +69,9 @@ exports.postAddProduct = (req, res, next) => {
             //     errorMessage: 'Database operation failed. Please try again.',
             //     validationErrors: []
             // });
-            res.redirect('/500')
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error); // will skip other middlewares
         });
 };
 
@@ -94,7 +96,11 @@ exports.getEditProduct = (req, res, next) => {
                 validationErrors: []
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error); // will skip other middlewares
+        });
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -138,7 +144,11 @@ exports.postEditProduct = (req, res, next) => {
                     res.redirect('/admin/products');
                 });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error); // will skip other middlewares
+        });
 };
 
 exports.getProducts = (req, res, next) => {
