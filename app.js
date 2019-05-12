@@ -46,18 +46,6 @@ app.use(csrfProtection);
 // midleware for flash messages
 app.use(flash());
 
-app.use((req, res, next) => {
-    if (!req.session.user) {
-        return next();
-    }
-    User.findById(req.session.user._id)
-        .then(user => {
-            req.user = user;
-            next();
-        })
-        .catch(err => console.log(err));
-});
-
 // check authentication and add csrf token into all pages
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
@@ -65,11 +53,41 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    if (!req.session.user) {
+        return next();
+    }
+    User.findById(req.session.user._id)
+        .then(user => {
+            if (!user) {
+                return next();
+            }
+            req.user = user;
+            next();
+        })
+        .catch(err => {
+            //throw new Error(err); // doesn't call the error middleware from async 
+            next(new Error(err)); // proper way when inside async code!
+        });
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
+app.get('/500', errorController.get500);
+
 app.use(errorController.get404);
+
+app.use((err, req, res, next) => {
+    // res.status(error.httpStatusCode).render(...);
+    // res.redirect('/500');
+    res.status(500).render('500', {
+        pageTitle: 'Error',
+        path: '/500',
+        isAuthenticated: req.session.isLoggedIn
+    });
+});
 
 mongoose
     .connect(process.env.PROD_MONGODB_URI)
