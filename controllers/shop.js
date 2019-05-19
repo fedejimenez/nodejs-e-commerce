@@ -142,3 +142,9 @@ exports.getOrders = (req, res, next) => {
             return next(error); // will skip other middlewares
         });
 };
+
+exports.getInvoice = (req, res, next) => {
+    const orderId = req.params.oderId;
+    const invoiceName = 'invoice-' + orderId + 'pdf';
+    const invoicePath = path.join('data', 'invoices', invoiceName);
+};
