@@ -8,6 +8,7 @@ const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf'); // csrf protection
 const flash = require('connect-flash'); // flash messages
+const multer = require('multer');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -20,6 +21,16 @@ const store = new MongoDbStore({
 
 const csrfProtection = csrf();
 
+// multer for dealing with file in request
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -29,6 +40,7 @@ const authRoutes = require('./routes/auth');
 
 // Midlewares
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ storage: fileStorage }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'my secret',
