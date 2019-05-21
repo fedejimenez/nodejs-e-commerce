@@ -36,22 +36,27 @@
                             <% } %>
                     </div>
                     <section class="pagination">
-                        <% if (currentPage != 1){ %>
+                        <% if (currentPage !== 1 && previousPage !== 1){ %>
                             <a href="/?page=1">1</a>
                             <% } %>
-                                <a href="/?page=<%= currentPage %>" class="active">
-                                    <%= currentPage %>
-                                </a>
-                                <% if (hasNextPage){ %>
-                                    <a href="/?page=<%= nextPage %>">
-                                        <%= nextPage %>
+                                <% if (hasPreviousPage){ %>
+                                    <a href="/?page=<%= previousPage %>">
+                                        <%= previousPage %>
                                     </a>
                                     <% } %>
-                                        <% if (lastPage !== currentPage && nextPage !== lastPage){ %>
-                                            <a href="/?page=<%= lastPage %>" class="active">
-                                                <%= lastPage %>
+                                        <a href="/?page=<%= currentPage %>" class="active">
+                                            <%= currentPage %>
+                                        </a>
+                                        <% if (hasNextPage){ %>
+                                            <a href="/?page=<%= nextPage %>">
+                                                <%= nextPage %>
                                             </a>
                                             <% } %>
+                                                <% if (lastPage !== currentPage && nextPage !== lastPage){ %>
+                                                    <a href="/?page=<%= lastPage %>">
+                                                        <%= lastPage %>
+                                                    </a>
+                                                    <% } %>
                     </section>
                     <% } else { %>
                         <h1>No Products Found!</h1>
