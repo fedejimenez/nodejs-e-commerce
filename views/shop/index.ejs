@@ -36,8 +36,22 @@
                             <% } %>
                     </div>
                     <section class="pagination">
-                        <a href="/?page=1">1</a>
-                        <a href="/?page=2">2</a>
+                        <% if (currentPage != 1){ %>
+                            <a href="/?page=1">1</a>
+                            <% } %>
+                                <a href="/?page=<%= currentPage %>" class="active">
+                                    <%= currentPage %>
+                                </a>
+                                <% if (hasNextPage){ %>
+                                    <a href="/?page=<%= nextPage %>">
+                                        <%= nextPage %>
+                                    </a>
+                                    <% } %>
+                                        <% if (lastPage !== currentPage && nextPage !== lastPage){ %>
+                                            <a href="/?page=<%= lastPage %>" class="active">
+                                                <%= lastPage %>
+                                            </a>
+                                            <% } %>
                     </section>
                     <% } else { %>
                         <h1>No Products Found!</h1>
