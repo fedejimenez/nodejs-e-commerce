@@ -262,7 +262,7 @@ exports.getInvoice = (req, res, next) => {
             pdfDoc.text('----------------');
             pdfDoc
                 .fontSize(20)
-                .text(`Total Price: $ ${totalPrice}`);
+                .text(`Total Price: $ ${totalPrice - 1}`);
 
             pdfDoc.end();
 
