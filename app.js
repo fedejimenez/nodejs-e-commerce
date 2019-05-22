@@ -12,6 +12,9 @@ const multer = require('multer');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
+const shopController = require('./controllers/shop');
+const isAuth = require('./middleware/is-auth');
+
 
 const app = express();
 const store = new MongoDbStore({
@@ -61,15 +64,12 @@ app.use(session({
         // }
 }));
 
-// check for csrf token in any post request 
-app.use(csrfProtection);
 // midleware for flash messages
 app.use(flash());
 
-// check authentication and add csrf token into all pages
+// check authentication into all pages
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
-    res.locals.csrfToken = req.csrfToken();
     next();
 });
 
@@ -91,6 +91,16 @@ app.use((req, res, next) => {
         });
 });
 
+// Dont need csrf protection for payment - Stripes takes care
+app.post('/create-order', isAuth, shopController.postOrder);
+
+// check for csrf token in any post request 
+app.use(csrfProtection);
+app.use((req, res, next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
@@ -102,6 +112,7 @@ app.use(errorController.get404);
 app.use((err, req, res, next) => {
     // res.status(error.httpStatusCode).render(...);
     // res.redirect('/500');
+    // console.log(err);
     res.status(500).render('500', {
         pageTitle: 'Error',
         path: '/500',
