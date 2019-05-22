@@ -2,8 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PDFDocument = require('pdfkit');
-const stripe = require('stripe')('sk_test_qelJtjJHNwchsXebAACso1mm00JgjA83jc');
-
+const stripe = require('stripe')(`${process.env.STRIPE_API_KEY}`);
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -127,7 +126,8 @@ exports.getCheckout = (req, res, next) => {
                 path: '/checkout',
                 pageTitle: 'Checkout',
                 products: products,
-                totalSum: total
+                totalSum: total,
+                data_key: process.env.STRIPE_DATA_KEY
             });
         })
         .catch(err => {
@@ -167,8 +167,7 @@ exports.postOrder = (req, res, next) => {
     // Token is created using Checkout or Elements!
     // Get the payment token ID submitted by the form:
     const token = req.body.stripeToken; // Using Express
-    let totalSum = 0
-
+    let totalSum = 0;
     req.user
         .populate('cart.items.productId')
         .execPopulate()
