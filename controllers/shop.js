@@ -195,7 +195,7 @@ exports.postOrder = (req, res, next) => {
                 currency: 'usd',
                 description: 'Demo Order',
                 source: token,
-                metadata: { order_id: result._id }
+                metadata: { order_id: result._id.toString() }
             });
             return req.user.clearCart();
         })
