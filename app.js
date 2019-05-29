@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config(); // To access env variables
 const path = require('path');
 
 const express = require('express');
