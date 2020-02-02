@@ -9,6 +9,7 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf'); // csrf protection
 const flash = require('connect-flash'); // flash messages
 const multer = require('multer');
+const compression = require('compression');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -47,6 +48,9 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
+
+// assets compression middleware for deployment
+app.use(compression());
 
 // Midlewares
 app.use(bodyParser.urlencoded({ extended: false }));
