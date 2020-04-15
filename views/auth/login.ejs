@@ -1,6 +1,8 @@
 <%- include('../includes/head.ejs') %>
     <link rel="stylesheet" href="/css/forms.css">
     <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     </head>
 
     <body>
@@ -12,21 +14,36 @@
                         <%= errorMessage %>
                     </div>
                     <% } %>
-                        <form class="login-form" action="/login" method="POST">
+                    <div class="wrapper">
+                        <form class="login" action="/login" method="POST">
+                            <p class="title">Log in</p>
                             <div class="form-control">
                                 <label for="email">E-Mail</label>
                                 <input class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" type="email" name="email" id="email" value="<%= oldInput.email %>">
+                                <i class="fa fa-envelope"></i>
                             </div>
                             <div class="form-control">
                                 <label for="password">Password</label>
                                 <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" type="password" name="password" id="password" value="<%= oldInput.password %>">
+                                <i class="fa fa-key"></i>
+                                <div class="centered">
+                                    <a href="/reset">Reset Password</a>
+                                </div>
                             </div>
 
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button class="btn" type="submit">Login</button>
+                            <button class="btn" type="submit">
+                                <i class="spinner"></i>
+                                <span class="state">Log in</span>
+                            </button>
+                            <div class="guest">
+                                <label for="email">Guest User:</label>
+                                <br><br>
+                                <span>Email: </span>test@test.com
+                                <br>
+                                <span>Password: </span>test1234
+                            </div>
                         </form>
-                        <div class="centered">
-                            <a href="/reset">Reset Password</a>
-                        </div>
+                    </div>
             </main>
             <%- include('../includes/end.ejs') %>

@@ -1,6 +1,8 @@
 <%- include('../includes/head.ejs') %>
     <link rel="stylesheet" href="/css/forms.css">
     <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     </head>
 
     <body>
@@ -12,22 +14,28 @@
                         <%= errorMessage %>
                     </div>
                     <% } %>
-                        <form class="login-form" action="/signup" method="POST" novalidate>
+                    <div class="wrapper">
+                        <form class="login" action="/signup" method="POST" novalidate>
+                            <p class="title">Sign Up</p>
                             <div class="form-control">
                                 <label for="email">E-Mail</label>
                                 <input class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" type="email" name="email" id="email" value="<%= oldInput.email %>">
+                                <i class="fa fa-envelope"></i>
                             </div>
                             <div class="form-control">
                                 <label for="password">Password</label>
                                 <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" type="password" name="password" id="password" value="<%=  oldInput.password %>">
+                                <i class="fa fa-key"></i>
                             </div>
                             <div class="form-control">
                                 <label for="confirmPassword">Confirm Password</label>
                                 <input class="<%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : '' %>" type="password" name="confirmPassword" id="confirmPassword" value="<%=  oldInput.confirmPassword %>">
+                                <i class="fa fa-key"></i>
                             </div>
 
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="btn" type="submit">Signup</button>
                         </form>
+                    </div>
             </main>
             <%- include('../includes/end.ejs') %>
