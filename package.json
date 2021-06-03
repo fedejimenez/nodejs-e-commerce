@@ -37,7 +37,7 @@
         "nodemailer": "^6.4.16",
         "nodemailer-sendgrid-transport": "^0.2.0",
         "pdfkit": "^0.9.1",
-        "pug": "^2.0.3",
+        "pug": "^3.0.1",
         "stripe": "^7.0.0"
     }
 }
