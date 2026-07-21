@@ -13,7 +13,7 @@
     "author": "fedejimenez",
     "license": "MIT",
     "devDependencies": {
-        "body-parser": "^1.20.3",
+        "body-parser": "^1.20.6",
         "nodemon": "^3.1.14"
     },
     "dependencies": {
